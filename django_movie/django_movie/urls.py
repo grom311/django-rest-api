@@ -17,8 +17,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework_swagger.views import get_swagger_view
 
+shema_view = get_swagger_view(title='docs views')
 urlpatterns = [
+    path('docs/', shema_view),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),

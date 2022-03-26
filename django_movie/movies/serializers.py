@@ -1,8 +1,9 @@
 from dataclasses import fields
 from multiprocessing import context
+from pyexpat import model
 from rest_framework import serializers
 
-from .models import Movie, Rating, Review
+from .models import Movie, Rating, Review, Actor
 
 class FilterReviewListSerializer(serializers.ListSerializer):
     def to_representation(self, data):
@@ -15,6 +16,18 @@ class RecursiveSerializer(serializers.Serializer):
         serializer = self.parent.parent.__class__(value, context=self.context)
         return serializer.data
     
+class ActorListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Actor
+        fields = ('id', 'name', 'image')
+
+
+class ActorDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Actor
+        fields = '__all__'
+
+
 class MovieListSerializer(serializers.ModelSerializer):
     rating_user = serializers.BooleanField()
     middle_star = serializers.IntegerField()
@@ -39,8 +52,8 @@ class ReviewSerializer(serializers.ModelSerializer):
 class MovieDetailSerializer(serializers.ModelSerializer):
     """Detail movie"""
     category = serializers.SlugRelatedField(slug_field="name", read_only=True)
-    directors = serializers.SlugRelatedField(slug_field="name", read_only=True, many=True)
-    actors = serializers.SlugRelatedField(slug_field="name", read_only=True, many=True)
+    directors = ActorDetailSerializer(read_only=True, many=True)
+    actors = ActorDetailSerializer(read_only=True, many=True)
     genres = serializers.SlugRelatedField(slug_field="name", read_only=True, many=True)
     reviews = ReviewSerializer(many=True)
     class Meta:
