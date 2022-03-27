@@ -41,10 +41,14 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'ckeditor',
     'ckeditor_uploader',
+    'django_filters',
     'movies',
 ]
 
-REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }
+REST_FRAMEWORK = { 
+    # 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_FILTER_BACKENDS': 'django_filters.rest_framework.DjangoFilterBackend',
+    }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
