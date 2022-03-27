@@ -15,6 +15,9 @@ def get_client_ip( request):
 class CharFilterInFilter(filters.BaseInFilter, filters.CharFilter):
     pass
 
+class CharFilterInFilter2(filters.BaseInFilter, filters.CharFilter):
+    pass
+
 
 class MovieFilter(filters.FilterSet):
     genres = CharFilterInFilter(field_name='genres__name', lookup_expr='in')
@@ -23,4 +26,3 @@ class MovieFilter(filters.FilterSet):
     class Meta:
         model = Movie
         fields = ['genres', 'year']
-        
